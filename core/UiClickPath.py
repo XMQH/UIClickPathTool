@@ -40,27 +40,23 @@ current_logpath = push_nsslog_path + '\\nsslog\\'
 current_nsslog = os.listdir(current_logpath)[-1]
 print(current_nsslog)
 
+# def get_uipath_lines():
 
-def get_uipath_lines(fp, lines_set, suffix=''):
-
-   for line in fp:
-      line = line.rstrip()
-      if '[UIClickDebugPath]' in line and line not in lines_set:
-         lines_set.add(line)
-         print('[UIClickDebugPath]' + suffix, line)
-
-      # using set objects to hold unique items
-
-
-
-
-
-
-
+p = 0
 while True:
-   dev.adb.pull(phone_nsslog_path, push_nsslog_path)
-   time.sleep(0.1) # 每隔0.1s向电脑托送日志 与实时读取日志是否回产生冲突？
-   with open(current_nsslog, 'r') as f:
-      get_uipath_lines(f, '1')
+    dev.adb.pull(phone_nsslog_path, push_nsslog_path)
+    time.sleep(0.1)  # 每隔0.1s向电脑托送日志 与实时读取日志是否回产生冲突？
+    with open(current_logpath + '\\nsslog\\' + current_nsslog, 'rb') as f:
+        f.seek(p, 0)
+        data = f.readlines()
+        for line in data:
+            line = str(line)
+            if '[UIClickDebugPath]' in line:
+                UIname = line.split('[UIClickDebugPath]')[1]
+                UIname = UIname.replace("\n'", '')
+                print(UIname)
+                p = f.tell()
+                f.seek(p, 0)
+                time.sleep(1)
 
 #
