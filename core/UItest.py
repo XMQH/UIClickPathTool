@@ -19,14 +19,18 @@ print(current_nsslog)
 print(work_path + '\\nsslog\\', current_nsslog)
 
 p = 0
-with open(work_path + '\\nsslog\\' + current_nsslog, 'rb') as f:
-    f.seek(p, 0)
-    while True:
-        lines = f.readlines()
-        if lines:
-            print(lines)
-            p = f.tell()
-            f.seek(p, 0)
-            time.sleep(1)
 
-
+while True:
+    device.adb.pull(nsslog_path, work_path)
+    with open(work_path + '\\nsslog\\' + current_nsslog, 'rb') as f:
+        f.seek(p, 0)
+        data = f.readlines()
+        for line in data:
+            line = str(line)
+            if '[UIClickDebugPath]' in line:
+                UIname = line.split('[UIClickDebugPath]')[1]
+                UIname = UIname.replace("\n'", '')
+                print(UIname)
+                p = f.tell()
+                f.seek(p, 0)
+                time.sleep(1)
