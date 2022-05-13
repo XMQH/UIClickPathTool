@@ -13,6 +13,10 @@ from tkinter import *
 import pyperclip
 
 from core.UiWindow import ui_window
+import logging
+
+logger = logging.getLogger("airtest")
+logger.setLevel(logging.ERROR)
 
 auto_setup(__file__)
 auto_setup(__file__, devices=["Android:///"])
@@ -63,8 +67,8 @@ def get_uipath_lines():
                     time.sleep(1)
 
 
-uipath = ''
-if len(list) > 0:
-    uipath = str(list[-1])
+# uipath = ''
+# if len(list) > 0:
+#     uipath = str(list[-1])
 
 get_uipath_lines()
