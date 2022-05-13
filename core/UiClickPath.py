@@ -6,6 +6,7 @@
 # @Software: PyCharm
 # @Description:
 import os.path
+import shutil
 import time
 from multiprocessing import Process, Queue
 from airtest.core.api import connect_device, auto_setup
@@ -22,7 +23,8 @@ auto_setup(__file__)
 auto_setup(__file__, devices=["Android:///"])
 
 phone_nsslog_path = "/sdcard/Android/data/com.tencent.tmgp.speedmobile/files/Nsslog/"
-push_nsslog_path = os.path.abspath(os.path.dirname(__file__))
+push_nsslog_path = os.path.abspath("../Nsslog/")
+print(push_nsslog_path)
 
 # 连接手机
 dev = connect_device("Android:///")
@@ -30,10 +32,14 @@ dev = connect_device("Android:///")
 # 检查是否存在日志文件
 
 # 每次启动游戏前先清空手机内游戏日志和已推送到电脑的日志
+# TODO 手机
+
+if os.path.exists(push_nsslog_path):
+    shutil.rmtree(push_nsslog_path)
 
 # 启动游戏
-# start_app = dev.start_app("com.tencent.tmgp.speedmobile")
-
+start_app = dev.start_app("com.tencent.tmgp.speedmobile")
+time.sleep(5)
 
 """
     获取游戏最新的Nsslog日志
@@ -41,7 +47,7 @@ dev = connect_device("Android:///")
 
 dev.adb.pull(phone_nsslog_path, push_nsslog_path)
 
-current_logpath = push_nsslog_path + '\\Nsslog\\'
+current_logpath = push_nsslog_path + "\\"
 current_nsslog = os.listdir(current_logpath)[-1]
 print(current_nsslog)
 
