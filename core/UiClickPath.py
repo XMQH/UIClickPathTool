@@ -24,7 +24,7 @@ auto_setup(__file__, devices=["Android:///"])
 
 phone_nsslog_path = "/sdcard/Android/data/com.tencent.tmgp.speedmobile/files/Nsslog/"
 pull_nsslog_path = os.path.abspath(os.path.dirname(__file__))
-print(pull_nsslog_path)
+print("电脑端日志存放目录：" + pull_nsslog_path)
 
 # 连接手机
 dev = connect_device("Android:///")
@@ -41,6 +41,8 @@ dev = connect_device("Android:///")
 start_app = dev.start_app("com.tencent.tmgp.speedmobile")
 time.sleep(5)
 
+# 开启UI路径输出开关
+
 """
     获取游戏最新的Nsslog日志
 """
@@ -49,7 +51,7 @@ dev.adb.pull(phone_nsslog_path, pull_nsslog_path)
 
 current_logpath = pull_nsslog_path + "\\Nsslog\\"
 current_nsslog = os.listdir(current_logpath)[-1]
-print(current_nsslog)
+print("正在读取的游戏日志文件：" + current_nsslog)
 
 list = []  # 所有按钮路径
 
@@ -66,8 +68,7 @@ def get_uipath_lines():
                 if '[UIClickDebugPath]' in line:
                     UIname = line.split('[UIClickDebugPath]')[1]
                     UIname = UIname.replace("\n", "")
-                    list.append(UIname)
-                    print(list[-1])
+                    print("UI输出路径：" + UIname)
                     p = f.tell()
                     f.seek(p, 0)
                     time.sleep(1)
