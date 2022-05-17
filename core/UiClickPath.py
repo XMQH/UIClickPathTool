@@ -68,7 +68,7 @@ def get_uipath_lines():
                 if '[UIClickDebugPath]' in line:
                     UIname = line.split('[UIClickDebugPath]')[1]
                     UIname = UIname.replace("\n", "")
-                    print("UI输出路径：" + UIname)
+                    print("UI点击路径：" + UIname)
                     p = f.tell()
                     f.seek(p, 0)
                     time.sleep(1)
